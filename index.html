@@ -28,8 +28,14 @@
 
       <div id="settings-panel" class="hidden mt-3 max-w-2xl mx-auto bg-white p-4 rounded-lg border border-slate-300 shadow-sm text-left space-y-3">
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Gemini API Key (Required for Live AI Generation)</label>
-          <input type="password" id="api-key-input" placeholder="Paste Google AI Studio API Key" class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <div class="flex justify-between items-center mb-1">
+            <label class="block text-xs font-semibold text-slate-700">Gemini API Key</label>
+            <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-[11px] text-blue-600 hover:underline font-medium">
+              🔑 Get a free API key from Google AI Studio ↗
+            </a>
+          </div>
+          <input type="password" id="api-key-input" placeholder="Paste your AI Studio API key here..." class="w-full text-xs p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <p class="text-[10px] text-slate-500 mt-1">Your key is stored locally in your browser session memory and is never saved to the repository or shared.</p>
         </div>
         <div>
           <div class="flex justify-between items-center mb-1">
@@ -145,6 +151,19 @@
     let generatedResume = '';
     let generatedCover = '';
     let currentQuestions = [];
+
+    // Load saved API key from localStorage if available
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedKey = localStorage.getItem('gemini_api_key');
+      if (savedKey) {
+        document.getElementById('api-key-input').value = savedKey;
+      }
+    });
+
+    // Save API key to localStorage when changed
+    document.getElementById('api-key-input').addEventListener('input', (e) => {
+      localStorage.setItem('gemini_api_key', e.target.value.trim());
+    });
 
     document.getElementById('toggle-settings-btn').addEventListener('click', () => {
       document.getElementById('settings-panel').classList.toggle('hidden');
